@@ -15,30 +15,30 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@chakra-ui/react": "3.30.0",
+    "@chakra-ui/react": "^3.34.0",
     "@emotion/react": "11.14.0",
-    "@prisma/adapter-better-sqlite3": "^7.2.0",
-    "@prisma/client": "7.2.0",
-    "@tanstack/react-query": "5.90.16",
+    "@prisma/adapter-better-sqlite3": "^7.6.0",
+    "@prisma/client": "^7.6.0",
+    "@tanstack/react-query": "^5.95.2",
     "bcryptjs": "3.0.3",
-    "better-sqlite3": "^12.6.2",
+    "better-sqlite3": "^12.8.0",
     "jsonwebtoken": "9.0.3",
-    "next": "16.0.10",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "react-hook-form": "7.70.0"
+    "next": "^16.2.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-hook-form": "^7.72.0"
   },
   "devDependencies": {
-    "@types/bcryptjs": "2.4.6",
+    "@types/bcryptjs": "^3.0.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/jsonwebtoken": "9.0.10",
-    "@types/node": "25.0.1",
-    "@types/react": "19.2.7",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "19.2.3",
-    "eslint": "9.39.2",
-    "eslint-config-next": "16.0.10",
-    "prisma": "7.2.0",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "^16.2.1",
+    "prisma": "^7.6.0",
     "tsx": "4.21.0",
-    "typescript": "5.9.3"
+    "typescript": "^6.0.2"
   }
 }
