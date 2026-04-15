@@ -220,6 +220,12 @@ FIRST_SUPERUSER_EMAIL=dev@example.com
 FIRST_SUPERUSER_PASSWORD=DevPassword
 ```
 
+## Start chromium on host for remote debugging
+
+``
+chromium --remote-debugging-port=9222 --remote-debugging-address=0.0.0.0 \                                                                        
+    --user-data-dir=/tmp/chrome-cdp --no-first-run --no-default-browser-check about:blank
+``
 ## License
 
 This project is for training purposes.

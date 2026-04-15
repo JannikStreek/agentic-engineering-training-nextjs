@@ -22,6 +22,7 @@ dist
 # Cache
 .eslintcache
 tsconfig.tsbuildinfo
+tsconfig.*.tsbuildinfo
 
 # Misc
 *.log
@@ -31,3 +32,6 @@ tsconfig.tsbuildinfo
 *.db
 *.db-journal
 prisma/dev.db
+.claude
+.playwright-mcp
+backup
