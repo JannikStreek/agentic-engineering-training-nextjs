@@ -8,28 +8,13 @@ ARG USERNAME=node
 
 ENV TZ="$TZ"
 
-# -- Layer 1: Build git from source (debian ships an older version) ---------
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        make gcc libssl-dev zlib1g-dev libcurl4-gnutls-dev \
-        libexpat1-dev gettext autoconf ca-certificates curl && \
-    cd /tmp && \
-    curl -fsSL "https://github.com/git/git/archive/refs/tags/v${GIT_VERSION}.tar.gz" -o git.tar.gz && \
-    tar -xzf git.tar.gz && \
-    cd "git-${GIT_VERSION}" && \
-    make prefix=/usr/local all -j"$(nproc)" && \
-    make prefix=/usr/local install && \
-    cd / && rm -rf /tmp/git* && \
-    apt-get purge -y gcc autoconf make && \
-    apt-get autoremove -y && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
 # -- Layer 2: System packages -----------------------------------------------
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        less procps sudo fzf zsh man-db unzip gnupg2 gh jq \
-        postgresql-client g++ python3 vim bubblewrap socat wget && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update
+
+# build-essentials, okg-config and libssl-dev for rtk
+RUN apt-get install -y --no-install-recommends \
+      build-essential pkg-config libssl-dev git less procps sudo fzf zsh man-db unzip gnupg2 gh jq \
+      postgresql-client g++ python3 vim bubblewrap socat wget
 
 # -- Layer 3: git-delta (parameterized version) -----------------------------
 RUN ARCH="$(dpkg --print-architecture)" && \
@@ -54,8 +39,20 @@ ENV DEVCONTAINER=true \
     PATH=$PATH:/usr/local/share/npm-global/bin \
     SHELL=/bin/zsh
 
-WORKDIR /home/node/app
+# --- Google Cloud SDK
+# Install Google Cloud CLI
+RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" \
+    | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+    curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg \
+    | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg && \
+    apt-get update && \
+    apt-get install -y google-cloud-cli && \
+    rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /home/node/.config/gcloud && \
+    chown -R node:node /home/node/.config/gcloud
+
+WORKDIR /home/node/app
 # -- Switch to non-root user ------------------------------------------------
 USER ${USERNAME}
 
@@ -73,5 +70,9 @@ RUN curl -fsSL https://claude.ai/install.sh | bash && \
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && \
     npm install -g @anthropic-ai/sandbox-runtime
 
+
+RUN curl -fsSL https://antigravity.google/cli/install.sh | bash
 RUN npm i -g @openai/codex
+RUN npm i -g @google/gemini-cli 
 RUN npm i -g agent-browser
+RUN echo 'set mouse=' >> ~/.vimrc

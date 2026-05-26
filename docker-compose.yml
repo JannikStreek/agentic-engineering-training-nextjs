@@ -5,16 +5,26 @@ services:
       target: development
     tty: true
     stdin_open: true
-    network_mode: host
+    environment:
+      # - HTTP_PROXY=http://localhost:3128
+      # - HTTPS_PROXY=http://localhost:3128
+      - GOOGLE_CLOUD_PROJECT=
+      - GOOGLE_CLOUD_LOCATION=
+    ports:
+      - "3000:3000"
     volumes:
       - ./:/home/node/app
-    environment:
-      - PLAYWRIGHT_MCP_CDP_ENDPOINT=http://localhost:9222
+    # network_mode: "service:squid"
 
-  # chrome:
-  #   image: ghcr.io/browserless/chromium:latest
-  #   ports:
-  #     - "9222:9222"
-  #   environment:
-  #     - PORT=9222
-  #     - CONNECTION_TIMEOUT=600000
+  chrome:
+    image: ghcr.io/browserless/chromium:latest
+    ports:
+      - "9222:9222"
+    environment:
+      - PORT=9222
+      - CONNECTION_TIMEOUT=600000
+
+  # squid:
+  #   image: ubuntu/squid
+  #   volumes:
+  #     - ./squid.conf:/etc/squid/squid.conf:ro

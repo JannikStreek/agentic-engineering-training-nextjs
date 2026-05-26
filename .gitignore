@@ -35,3 +35,4 @@ prisma/dev.db
 .claude
 .playwright-mcp
 backup
+docker-compose.override.yml
